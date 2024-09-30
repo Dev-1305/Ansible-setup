@@ -1,0 +1,9 @@
+---
+- name: Security Patch
+  yum:
+    name: "*"
+    security: yes
+    state: latest
+  register: status
+
+- debug: var=status
