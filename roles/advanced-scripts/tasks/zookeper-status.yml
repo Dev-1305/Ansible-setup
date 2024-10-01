@@ -1,3 +1,15 @@
-### Add script to find zookeeper status
+### Add script to find zookeeper leader status
 ---
-- name: Zookeeper status
+- name: Zookeeper Leader status
+  shell: echo stat | nc localhost 2181 | grep Mode
+  register: ps
+  throttle: 1
+  ## Update this if you to run for specific host group
+
+  # when: inventory_hostname in groups.<host_group>
+  
+- Name: Set ZK Leader host
+  set_fact:
+    zk_leader: "{{ inventory_hostname }}"
+  when: '"leader"in ps.stdout[1:-1]'
+  throttle: 1
